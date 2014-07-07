@@ -51,27 +51,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BongAuthException.cs" />
-    <Compile Include="BongException.cs" />
-    <Compile Include="BongSession.cs" />
-    <Compile Include="BongSessionImpl.cs" />
-    <Compile Include="Broadcast.cs" />
-    <Compile Include="Channel.cs" />
-    <Compile Include="IWebClient.cs" />
+    <Compile Include="Public\BongExceptions.cs" />
+    <Compile Include="Public\BongSession.cs" />
+    <Compile Include="Internal\BongSessionImpl.cs" />
+    <Compile Include="Public\Broadcast.cs" />
+    <Compile Include="Public\Channel.cs" />
+    <Compile Include="WebServiceContract\IWebClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Recording.cs" />
-    <Compile Include="WebClientDefault.cs" />
-    <Compile Include="WebClientRequest.cs" />
-    <Compile Include="WebClientResponse.cs" />
+    <Compile Include="Public\Recording.cs" />
+    <Compile Include="WebServiceImplementation\WebClientDefault.cs" />
+    <Compile Include="WebServiceContract\WebClientRequest.cs" />
+    <Compile Include="WebServiceContract\WebClientResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Schnittstellenklassen.cd" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WebServiceContract\" />
-    <Folder Include="WebServiceImplementation\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

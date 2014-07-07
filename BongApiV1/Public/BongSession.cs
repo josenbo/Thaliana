@@ -17,18 +17,18 @@ namespace BongApiV1
         {
             _session = new BongSessionImpl(webClient ?? new WebClientDefault("http://www.bong.tv"));
 
-            var request = new WebClientRequest();
-            request.Url = "api/v1/user_sessions.json";
-            request.HttpVerb = "POST";
-            request.Parameters.Add("login", username);
-            request.Parameters.Add("password", password);
+            //var request = new WebClientRequest();
+            //request.Url = "api/v1/user_sessions.json";
+            //request.HttpVerb = "POST";
+            //request.Parameters.Add("login", username);
+            //request.Parameters.Add("password", password);
 
-            var response = new WebClientResponse();
+            //var response = new WebClientResponse();
             
-            _session.WebClientImpl.Execute(request, response);
+            //_session.WebClientImpl.Execute(request, response);
             
-            if (response.HttpStatusCode != HttpStatusCode.OK)
-                throw new BongAuthException();
+            //if (response.HttpStatusCode != HttpStatusCode.OK)
+            //    throw new BongAuthException();
         }
 
         public IEnumerable<Recording> Recordings 

@@ -39,9 +39,11 @@ namespace BongApiV1
             req.RequestFormat = DataFormat.Json;
             req.AddBody(request.Parameters);
 
-            RestResponse<responseContentType> rsp = _client.Execute<responseContentType>(req);
+            // RestResponse<responseContentType> rsp = _client.Execute<responseContentType>(req);
 
             // response.HttpStatusCode = rsp.StatusCode
+
+            throw new NotImplementedException();
         }
     }
 }
