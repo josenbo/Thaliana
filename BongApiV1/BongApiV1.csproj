@@ -56,10 +56,10 @@
     <Compile Include="Internal\BongSessionImpl.cs" />
     <Compile Include="Public\Broadcast.cs" />
     <Compile Include="Public\Channel.cs" />
-    <Compile Include="WebServiceContract\IWebClient.cs" />
+    <Compile Include="WebServiceContract\IBongClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Public\Recording.cs" />
-    <Compile Include="WebServiceImplementation\WebClientDefault.cs" />
+    <Compile Include="WebServiceImplementation\BongClientDefault.cs" />
     <Compile Include="WebServiceContract\WebClientRequest.cs" />
     <Compile Include="WebServiceContract\WebClientResponse.cs" />
   </ItemGroup>

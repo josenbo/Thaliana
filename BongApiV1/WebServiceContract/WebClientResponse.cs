@@ -1,5 +1,5 @@
 ﻿
-namespace BongApiV1
+namespace BongApiV1.WebServiceContract
 {
     public class WebClientResponse
     {

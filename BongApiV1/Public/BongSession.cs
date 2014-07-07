@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using BongApiV1.Internal;
+using BongApiV1.WebServiceContract;
+using BongApiV1.WebServiceImplementation;
 
-namespace BongApiV1
+namespace BongApiV1.Public
 {
     public class BongSession
     {
         private readonly BongSessionImpl _session;
 
-        public BongSession(string username, string password, IWebClient webClient = null)
+        public BongSession(string username, string password, IBongClient bongClient = null)
         {
-            _session = new BongSessionImpl(webClient ?? new WebClientDefault("http://www.bong.tv"));
+            _session = new BongSessionImpl(bongClient ?? new BongClientDefault("http://www.bong.tv"));
 
             //var request = new WebClientRequest();
             //request.Url = "api/v1/user_sessions.json";

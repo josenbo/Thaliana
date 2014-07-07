@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BongApiV1.WebServiceContract;
 using RestSharp;
 
-namespace BongApiV1
+namespace BongApiV1.WebServiceImplementation
 {
-    class WebClientDefault : IWebClient
+    class BongClientDefault : IBongClient
     {
         private readonly RestClient _client;
 
-        public WebClientDefault(string baseUrl)
+        public BongClientDefault(string baseUrl)
         {
             _client = new RestClient(baseUrl) {CookieContainer = new System.Net.CookieContainer()};
         }

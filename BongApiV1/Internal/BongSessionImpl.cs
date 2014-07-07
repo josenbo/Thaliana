@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using BongApiV1.Public;
+using BongApiV1.WebServiceContract;
 
-namespace BongApiV1
+namespace BongApiV1.Internal
 {
     internal class BongSessionImpl
     {
-        public IWebClient WebClientImpl { get; set; }
+        public IBongClient BongClientImpl { get; set; }
         public List<Recording> Recordings { get; set; }
         public List<Channel> Channels { get; set; }
         public List<Broadcast> Broadcasts { get; set; }
 
-        public BongSessionImpl(IWebClient webClient)
+        public BongSessionImpl(IBongClient bongClient)
         {
-            WebClientImpl = webClient;
+            BongClientImpl = bongClient;
             Recordings = new List<Recording>();
             Channels= new List<Channel>();
             Broadcasts = new List<Broadcast>();

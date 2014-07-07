@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BongApiV1
+﻿namespace BongApiV1.Public
 {
     public class Broadcast
     {
