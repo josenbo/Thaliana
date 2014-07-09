@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BongApiV1.Public.BongSession">
+    <Position X="0.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAEAAAAAAAAAAAAAAAAgAAAAAAAAEAA=</HashCode>
+      <FileName>Public\BongSession.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BongApiV1.Public.Broadcast">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAACAAAAQAQAAEAAQAAAAAAAEgoAAQAAAAUAAgAAEAA=</HashCode>
+      <FileName>Public\Broadcast.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BongApiV1.Public.Channel">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAGAAAAAAAAAAAAAAAAAAQAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Public\Channel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BongApiV1.Public.Download">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgAAAAAAAABAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Public\Download.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BongApiV1.Public.Recording">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAACQAAEQAQAAEBAQAAAAAAAEgoAAQAAAAUAAgAAEAA=</HashCode>
+      <FileName>Public\Recording.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BongApiV1.Public.BongAuthException" Collapsed="true">
+    <Position X="6.25" Y="5.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Public\BongAuthException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BongApiV1.Public.BongException" Collapsed="true">
+    <Position X="7.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Public\BongException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BongApiV1.Public.BongNoSuchItemException" Collapsed="true">
+    <Position X="8.25" Y="5.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Public\BongNoSuchItemException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="BongApiV1.Public.BongRecordingState">
+    <Position X="0.75" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Public\BongSession.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BongApiV1.Public.BongDownloadFileType">
+    <Position X="0.75" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAg=</HashCode>
+      <FileName>Public\BongSession.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

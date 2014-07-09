@@ -30,15 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\ThalianaConsole\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration">
-      <HintPath>..\ThalianaConsole\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
-      <HintPath>..\ThalianaConsole\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-    </Reference>
     <Reference Include="RestSharp">
       <HintPath>..\ThalianaConsole\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
@@ -51,20 +42,45 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Public\BongExceptions.cs" />
+    <Compile Include="Public\BongAuthException.cs" />
+    <Compile Include="Public\BongException.cs" />
+    <Compile Include="Public\BongNoSuchItemException.cs" />
     <Compile Include="Public\BongSession.cs" />
     <Compile Include="Internal\BongSessionImpl.cs" />
     <Compile Include="Public\Broadcast.cs" />
     <Compile Include="Public\Channel.cs" />
+    <Compile Include="Public\Download.cs" />
+    <Compile Include="WebServiceContract\BongResponse.cs" />
+    <Compile Include="WebServiceContract\BongResponseCreateRecording.cs" />
+    <Compile Include="WebServiceContract\BongResponseDeleteRecording.cs" />
+    <Compile Include="WebServiceContract\BongResponseGetBroadcastDetails.cs" />
+    <Compile Include="WebServiceContract\BongResponseListBroadcasts.cs" />
+    <Compile Include="WebServiceContract\BongResponseListChannels.cs" />
+    <Compile Include="WebServiceContract\BongResponseListRecordings.cs" />
+    <Compile Include="WebServiceContract\BongResponseLoginUser.cs" />
+    <Compile Include="WebServiceContract\BongResponseSearchBroadcasts.cs" />
     <Compile Include="WebServiceContract\IBongClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Public\Recording.cs" />
-    <Compile Include="WebServiceImplementation\BongClientDefault.cs" />
-    <Compile Include="WebServiceContract\WebClientRequest.cs" />
-    <Compile Include="WebServiceContract\WebClientResponse.cs" />
+    <Compile Include="WebServiceImplementation\BongClientRestSharp.cs" />
+    <Compile Include="WebServiceImplementation\DataBroadcast.cs" />
+    <Compile Include="WebServiceImplementation\DataBroadcastSerie.cs" />
+    <Compile Include="WebServiceImplementation\DataChannel.cs" />
+    <Compile Include="WebServiceImplementation\DataRecording.cs" />
+    <Compile Include="WebServiceImplementation\DataCategory.cs" />
+    <Compile Include="WebServiceImplementation\DataRecordingFile.cs" />
+    <Compile Include="WebServiceImplementation\DataImage.cs" />
+    <Compile Include="WebServiceImplementation\EmptyResponse.cs" />
+    <Compile Include="WebServiceImplementation\GetBroadcastDetailResponse.cs" />
+    <Compile Include="WebServiceImplementation\JsonHelper.cs" />
+    <Compile Include="WebServiceImplementation\ListBroadcastsResponse.cs" />
+    <Compile Include="WebServiceImplementation\ListChannelsResponse.cs" />
+    <Compile Include="WebServiceImplementation\ListRecordingsResponse.cs" />
+    <Compile Include="WebServiceImplementation\WebMessageLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Public\Klassendiagramm.cd" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
