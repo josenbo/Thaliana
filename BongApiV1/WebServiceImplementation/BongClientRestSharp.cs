@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Text;
 using BongApiV1.Public;
@@ -306,60 +307,6 @@ namespace BongApiV1.WebServiceImplementation
             return ListBroadcastsInternal(resourceQuery);
         }
 
-        private BongResponseListBroadcasts ListBroadcastsInternal(string resourceQuery)
-        {
-            var request = new RestRequest(resourceQuery, Method.GET);
-
-            WaitBetweenCalls();
-
-            var response = _client.Execute<ListBroadcastsResponse>(request);
-
-            StoreTimeOfLastCall();
-
-            #region log request and response data
-            var sb = new StringBuilder();
-            sb.AppendLine("request.resource           = " + request.Resource);
-            sb.AppendLine("request.method             = " + request.Method.ToString());
-            sb.AppendLine();
-            sb.AppendLine("response.StatusCode        = " + response.StatusCode.ToString());
-            sb.AppendLine("response.StatusCode (num)  = " + (int)response.StatusCode);
-            sb.AppendLine("response.StatusDescription = " + response.StatusDescription);
-            sb.AppendLine("response.ResponseStatus    = " + response.ResponseStatus);
-            sb.AppendLine("response.ErrorMessage      = " + response.ErrorMessage);
-            sb.AppendLine("response.ContentEncoding   = " + response.ContentEncoding);
-            sb.AppendLine("response.ContentLength     = " + response.ContentLength);
-            sb.AppendLine("response.ContentType       = " + response.ContentType);
-            sb.AppendLine();
-            sb.AppendLine("response.Content");
-            sb.AppendLine(new string('-', 80));
-            sb.AppendLine(JsonHelper.FormatJson(response.Content));
-            sb.AppendLine(new string('-', 80));
-            sb.AppendLine();
-
-            WebMessageLogger.WriteLogMessage("broadcasts", sb.ToString());
-            #endregion
-
-            var retval = new BongResponseListBroadcasts();
-
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                retval.Success = true;
-
-                foreach (var broadcast in response.Data.Broadcasts)
-                {
-                    var brc = ExtractBroadcastFromResponse(broadcast);
-                    retval.Broadcasts.Add(brc.Id, brc);
-                }
-            }
-            else
-            {
-                retval.Success = false;
-                retval.ErrorMessage = response.ErrorMessage;
-            }
-
-            return retval;
-        }
-
         public BongResponseGetBroadcastDetails GetBroadcastDetails(string broadcastId)
         {
             var resourceQuery = String.Format("broadcasts/{0}.json", broadcastId);
@@ -458,6 +405,8 @@ namespace BongApiV1.WebServiceImplementation
                     var brc = ExtractBroadcastFromResponse(broadcast);
                     retval.Broadcasts.Add(brc.Id, brc);
                 }
+
+                AddBroadcastDetails(retval.Broadcasts.Values);
             }
             else
             {
@@ -483,7 +432,9 @@ namespace BongApiV1.WebServiceImplementation
 
             retval.Title = recordingResponse.Title;
             retval.Subtitle = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.Subtitle;
-            retval.ShortText = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.ShortText;
+            var shortText = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.ShortText;
+            var longText = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.LongText;
+            retval.Description = ((shortText == null ? 0 : shortText.Length) < (longText == null ? 0 : longText.Length)) ? longText : shortText;
             retval.Country = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.Country;
             retval.ProductionYear = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.ProductionYear;
 
@@ -549,7 +500,9 @@ namespace BongApiV1.WebServiceImplementation
 
             retval.Title = broadcastResponse.Title;
             retval.Subtitle = broadcastResponse.Subtitle;
-            retval.ShortText = broadcastResponse.ShortText;
+            var shortText = broadcastResponse.ShortText;
+            var longText = broadcastResponse.LongText;
+            retval.Description = ((shortText == null ? 0 : shortText.Length) < (longText == null ? 0 : longText.Length)) ? longText : shortText;
             retval.Country = broadcastResponse.Country;
             retval.ProductionYear = broadcastResponse.ProductionYear;
 
@@ -591,6 +544,78 @@ namespace BongApiV1.WebServiceImplementation
             }
 
             return retval;
+        }
+
+        private BongResponseListBroadcasts ListBroadcastsInternal(string resourceQuery)
+        {
+            var request = new RestRequest(resourceQuery, Method.GET);
+
+            WaitBetweenCalls();
+
+            var response = _client.Execute<ListBroadcastsResponse>(request);
+
+            StoreTimeOfLastCall();
+
+            #region log request and response data
+            var sb = new StringBuilder();
+            sb.AppendLine("request.resource           = " + request.Resource);
+            sb.AppendLine("request.method             = " + request.Method.ToString());
+            sb.AppendLine();
+            sb.AppendLine("response.StatusCode        = " + response.StatusCode.ToString());
+            sb.AppendLine("response.StatusCode (num)  = " + (int)response.StatusCode);
+            sb.AppendLine("response.StatusDescription = " + response.StatusDescription);
+            sb.AppendLine("response.ResponseStatus    = " + response.ResponseStatus);
+            sb.AppendLine("response.ErrorMessage      = " + response.ErrorMessage);
+            sb.AppendLine("response.ContentEncoding   = " + response.ContentEncoding);
+            sb.AppendLine("response.ContentLength     = " + response.ContentLength);
+            sb.AppendLine("response.ContentType       = " + response.ContentType);
+            sb.AppendLine();
+            sb.AppendLine("response.Content");
+            sb.AppendLine(new string('-', 80));
+            sb.AppendLine(JsonHelper.FormatJson(response.Content));
+            sb.AppendLine(new string('-', 80));
+            sb.AppendLine();
+
+            WebMessageLogger.WriteLogMessage("broadcasts", sb.ToString());
+            #endregion
+
+            var retval = new BongResponseListBroadcasts();
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                retval.Success = true;
+
+                foreach (var broadcast in response.Data.Broadcasts)
+                {
+                    var brc = ExtractBroadcastFromResponse(broadcast);
+                    retval.Broadcasts.Add(brc.Id, brc);
+                }
+
+                AddBroadcastDetails(retval.Broadcasts.Values);
+            }
+            else
+            {
+                retval.Success = false;
+                retval.ErrorMessage = response.ErrorMessage;
+            }
+
+            return retval;
+        }
+
+        private void AddBroadcastDetails(IEnumerable<Broadcast> broadcasts)
+        {
+            foreach (var broadcast in broadcasts)
+            {
+                var details = GetBroadcastDetails(broadcast.Id);
+
+                if (details.Success && details.Broadcasts.Count == 1)
+                {
+                    var longText = details.Broadcasts[broadcast.Id].Description;
+
+                    if ((broadcast.Description == null ? 0 : broadcast.Description.Length) < (longText == null ? 0 : longText.Length))
+                        broadcast.Description = longText;
+                }
+            }
         }
 
         private void WaitBetweenCalls()

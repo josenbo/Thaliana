@@ -16,7 +16,7 @@ namespace BongApiV1IntegrationTestApp
             var username = GetCurrentUserRegistryText("bong_user");
             var password = GetCurrentUserRegistryText("bong_cred");
 
-            var session = new BongSession(username, password, waitMillisecondsBetweenCalls: 2000);
+            var session = new BongSession(username, password, waitMillisecondsBetweenCalls: 100);
         }
 
         static string GetCurrentUserRegistryText(string name, string defaultValue = "")
