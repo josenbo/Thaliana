@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BongApiV1Test", "BongApiV1T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BongApiV1IntegrationTestApp", "BongApiV1IntegrationTestApp\BongApiV1IntegrationTestApp.csproj", "{04E106A0-27AB-4947-B235-9D23D9E429C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BongDownloadConsole", "BongDownloadConsole\BongDownloadConsole.csproj", "{56678019-FBDA-47DB-85B9-F1362BE19781}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{04E106A0-27AB-4947-B235-9D23D9E429C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04E106A0-27AB-4947-B235-9D23D9E429C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04E106A0-27AB-4947-B235-9D23D9E429C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56678019-FBDA-47DB-85B9-F1362BE19781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56678019-FBDA-47DB-85B9-F1362BE19781}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56678019-FBDA-47DB-85B9-F1362BE19781}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56678019-FBDA-47DB-85B9-F1362BE19781}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

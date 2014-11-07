@@ -432,9 +432,8 @@ namespace BongApiV1.WebServiceImplementation
 
             retval.Title = recordingResponse.Title;
             retval.Subtitle = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.Subtitle;
-            var shortText = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.ShortText;
-            var longText = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.LongText;
-            retval.Description = ((shortText == null ? 0 : shortText.Length) < (longText == null ? 0 : longText.Length)) ? longText : shortText;
+            retval.ShortText = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.ShortText;
+            retval.LongText = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.LongText;
             retval.Country = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.Country;
             retval.ProductionYear = recordingResponse.Broadcast == null ? null : recordingResponse.Broadcast.ProductionYear;
 
@@ -500,9 +499,8 @@ namespace BongApiV1.WebServiceImplementation
 
             retval.Title = broadcastResponse.Title;
             retval.Subtitle = broadcastResponse.Subtitle;
-            var shortText = broadcastResponse.ShortText;
-            var longText = broadcastResponse.LongText;
-            retval.Description = ((shortText == null ? 0 : shortText.Length) < (longText == null ? 0 : longText.Length)) ? longText : shortText;
+            retval.ShortText = broadcastResponse.ShortText;
+            retval.LongText = broadcastResponse.LongText;
             retval.Country = broadcastResponse.Country;
             retval.ProductionYear = broadcastResponse.ProductionYear;
 

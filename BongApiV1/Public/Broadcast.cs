@@ -17,6 +17,8 @@ namespace BongApiV1.Public
 
         public string Title { get; set; }
         public string Subtitle { get; set; }
+        public string ShortText { get; set; }
+        public string LongText { get; set; }
         public string Description { get; set; }
         public string Country { get; set; }
         public string ProductionYear { get; set; }

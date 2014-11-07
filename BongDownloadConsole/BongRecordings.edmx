@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="RECORDING" EntityType="Model.Store.RECORDING" store:Type="Tables" Schema="THALIA_BONG" />
+          <EntitySet Name="RECORDING_FILE" EntityType="Model.Store.RECORDING_FILE" store:Type="Tables" Schema="THALIA_BONG" />
+        </EntityContainer>
+        <EntityType Name="RECORDING">
+          <Key>
+            <PropertyRef Name="RECORDING_ID" />
+          </Key>
+          <Property Name="RECORDING_ID" Type="number" Nullable="false" Precision="10" />
+          <Property Name="BONG_RECORDING_ID" Type="varchar2" Nullable="false" MaxLength="20" />
+          <Property Name="BONG_BROADCAST_ID" Type="varchar2" Nullable="false" MaxLength="20" />
+          <Property Name="TITLE" Type="varchar2" Nullable="false" MaxLength="255" />
+          <Property Name="SUBTITLE" Type="varchar2" MaxLength="255" />
+          <Property Name="SHORT_TEXT" Type="varchar2" MaxLength="2000" />
+          <Property Name="LONG_TEXT" Type="varchar2" MaxLength="2000" />
+          <Property Name="COUNTRY" Type="varchar2" MaxLength="40" />
+          <Property Name="PRODUCTION_YEAR" Type="varchar2" MaxLength="40" />
+          <Property Name="START_TIME" Type="date" Nullable="false" />
+          <Property Name="END_TIME" Type="date" Nullable="false" />
+          <Property Name="BONG_CHANNEL_ID" Type="varchar2" Nullable="false" MaxLength="20" />
+          <Property Name="BONG_CHANNEL_NAME" Type="varchar2" Nullable="false" MaxLength="40" />
+          <Property Name="QUALITY" Type="varchar2" MaxLength="20" />
+          <Property Name="SERIE_ID" Type="varchar2" MaxLength="20" />
+          <Property Name="SERIE_SEASON" Type="varchar2" MaxLength="20" />
+          <Property Name="SERIE_EPISODE" Type="varchar2" MaxLength="20" />
+          <Property Name="SERIE_EPISODE_COUNT" Type="varchar2" MaxLength="20" />
+          <Property Name="PROCESSING_STATE" Type="number" Nullable="false" Precision="2" />
+        </EntityType>
+        <EntityType Name="RECORDING_FILE">
+          <Key>
+            <PropertyRef Name="RECORDING_FILE_ID" />
+          </Key>
+          <Property Name="RECORDING_FILE_ID" Type="number" Nullable="false" Precision="10" />
+          <Property Name="RECORDING_ID" Type="number" Nullable="false" Precision="10" />
+          <Property Name="FILE_TYPE" Type="varchar2" Nullable="false" MaxLength="40" />
+          <Property Name="DOWNLOAD_URL" Type="varchar2" Nullable="false" MaxLength="255" />
+          <Property Name="QUALITY" Type="varchar2" MaxLength="20" />
+          <Property Name="PROCESSING_STATE" Type="number" Nullable="false" Precision="2" StoreGeneratedPattern="None" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BongRecordings" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Recording" EntityType="Model.Recording" />
+          <EntitySet Name="RecordingFile" EntityType="Model.RecordingFile" />
+          <AssociationSet Name="RecordingRecordingFile" Association="Model.RecordingRecordingFile">
+            <End Role="Recording" EntitySet="Recording" />
+            <End Role="RecordingFile" EntitySet="RecordingFile" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Recording">
+          <Documentation>
+            <Summary>Aufzeichnungen des BONG-Service</Summary>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="RecordingId" />
+          </Key>
+          <Property Name="RecordingId" Type="Int32" Nullable="false" />
+          <Property Name="BongRecordingId" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="BongBroadcastId" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="Subtitle" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="ShortText" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
+          <Property Name="LongText" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
+          <Property Name="Country" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="ProductionYear" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" />
+          <Property Name="BongChannelId" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="BongChannelName" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="Quality" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="SerieId" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="SerieSeason" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="SerieEpisode" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="SerieEpisodeCount" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="ProcessingState" Type="Model.ProcessingStateEnum" Nullable="false" />
+          <NavigationProperty Name="RecordingFiles" Relationship="Model.RecordingRecordingFile" FromRole="Recording" ToRole="RecordingFile" />
+        </EntityType>
+        <EntityType Name="RecordingFile">
+          <Documentation>
+            <Summary>Bilder und Filme zu den BONG-Aufnahmen</Summary>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="RecordingFileId" />
+          </Key>
+          <Property Name="RecordingFileId" Type="Int32" Nullable="false" />
+          <Property Name="RecordingId" Type="Int32" Nullable="false" />
+          <Property Name="FileType" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="false" />
+          <Property Name="DownloadUrl" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="Quality" Type="String" MaxLength="20" Unicode="false" FixedLength="false" Nullable="false" />
+          <Property Name="ProcessingState" Type="Model.ProcessingStateEnum" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="Recording" Relationship="Model.RecordingRecordingFile" FromRole="RecordingFile" ToRole="Recording" />
+        </EntityType>
+        <Association Name="RecordingRecordingFile">
+          <End Type="Model.Recording" Role="Recording" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.RecordingFile" Role="RecordingFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recording">
+              <PropertyRef Name="RecordingId" />
+            </Principal>
+            <Dependent Role="RecordingFile">
+              <PropertyRef Name="RecordingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EnumType Name="a" a:ExternalTypeName="ProcessingStateEnum" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        <EnumType Name="ProcessingStateEnum" a:ExternalTypeName="ProcessingStateEnum" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        <EnumType Name="ProcessingStateEnum1" a:ExternalTypeName="ProcessingStateEnum" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="BongRecordings">
+          <EntitySetMapping Name="Recording">
+            <EntityTypeMapping TypeName="Model.Recording">
+              <MappingFragment StoreEntitySet="RECORDING">
+                <ScalarProperty Name="RecordingId" ColumnName="RECORDING_ID" />
+                <ScalarProperty Name="BongRecordingId" ColumnName="BONG_RECORDING_ID" />
+                <ScalarProperty Name="BongBroadcastId" ColumnName="BONG_BROADCAST_ID" />
+                <ScalarProperty Name="Title" ColumnName="TITLE" />
+                <ScalarProperty Name="Subtitle" ColumnName="SUBTITLE" />
+                <ScalarProperty Name="ShortText" ColumnName="SHORT_TEXT" />
+                <ScalarProperty Name="LongText" ColumnName="LONG_TEXT" />
+                <ScalarProperty Name="Country" ColumnName="COUNTRY" />
+                <ScalarProperty Name="ProductionYear" ColumnName="PRODUCTION_YEAR" />
+                <ScalarProperty Name="StartTime" ColumnName="START_TIME" />
+                <ScalarProperty Name="EndTime" ColumnName="END_TIME" />
+                <ScalarProperty Name="BongChannelId" ColumnName="BONG_CHANNEL_ID" />
+                <ScalarProperty Name="BongChannelName" ColumnName="BONG_CHANNEL_NAME" />
+                <ScalarProperty Name="Quality" ColumnName="QUALITY" />
+                <ScalarProperty Name="SerieId" ColumnName="SERIE_ID" />
+                <ScalarProperty Name="SerieSeason" ColumnName="SERIE_SEASON" />
+                <ScalarProperty Name="SerieEpisode" ColumnName="SERIE_EPISODE" />
+                <ScalarProperty Name="SerieEpisodeCount" ColumnName="SERIE_EPISODE_COUNT" />
+                <ScalarProperty Name="ProcessingState" ColumnName="PROCESSING_STATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RecordingFile">
+            <EntityTypeMapping TypeName="Model.RecordingFile">
+              <MappingFragment StoreEntitySet="RECORDING_FILE">
+                <ScalarProperty Name="RecordingFileId" ColumnName="RECORDING_FILE_ID" />
+                <ScalarProperty Name="RecordingId" ColumnName="RECORDING_ID" />
+                <ScalarProperty Name="FileType" ColumnName="FILE_TYPE" />
+                <ScalarProperty Name="DownloadUrl" ColumnName="DOWNLOAD_URL" />
+                <ScalarProperty Name="Quality" ColumnName="QUALITY" />
+                <ScalarProperty Name="ProcessingState" ColumnName="PROCESSING_STATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Kein" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
