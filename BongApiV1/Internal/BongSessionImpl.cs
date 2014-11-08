@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using BongApiV1.Public;
 using BongApiV1.WebServiceContract;
@@ -10,15 +11,28 @@ namespace BongApiV1.Internal
     internal class BongSessionImpl
     {
         private readonly IBongClient _bongClientImpl;
+        private readonly string _loggingDirectory;
+        private StreamWriter _logFile;
 
         internal Dictionary<string, Recording> Recordings { get; set; }
         internal Dictionary<string, Channel> Channels { get; set; }
 
-        internal BongSessionImpl(string username, string password, IBongClient bongClient)
+        internal string BongUsername { get { return _bongClientImpl.Username; } }
+        internal string BongPassword { get { return _bongClientImpl.Password; } }
+
+        internal BongSessionImpl(string username, string password, string loggingDirectory, IBongClient bongClient)
         {
             _bongClientImpl = bongClient;
             _bongClientImpl.Username = username;
             _bongClientImpl.Password = password;
+            
+            if (_loggingDirectory != null)
+            {
+                var filename = string.Format("Log_{0:yyyyMMdd_HHmm}_BongSessionImpl.log", DateTime.Now);
+                _logFile = new StreamWriter(Path.Combine(_loggingDirectory, filename));
+
+                _loggingDirectory = loggingDirectory;
+            }
 
             var response = _bongClientImpl.LoginUser();
 
@@ -27,6 +41,13 @@ namespace BongApiV1.Internal
 
             RefreshChannels();
             RefreshRecordings();
+        }
+
+        internal void Close()
+        {
+            if (_logFile == null) return;
+            _logFile.Close();
+            _logFile = null;
         }
 
         internal void RefreshRecordings()
@@ -191,6 +212,11 @@ namespace BongApiV1.Internal
             }
         }
 
+        internal void WriteLog(string format, params Object[] args)
+        {
+            if (_logFile != null) _logFile.Write(String.Format(format, args) + "\n");
+        }
+
         #region some methods used to check out service behaviour
         //internal void TestBroadcasts2()
         //{
@@ -223,6 +249,7 @@ namespace BongApiV1.Internal
         //    if (!response.Success)
         //        throw new BongException(response.ErrorMessage);
         //}
-	    #endregion    
+	    #endregion
+
     }
 }

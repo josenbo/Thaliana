@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using BongApiV1.Internal;
 using BongApiV1.WebServiceContract;
 using BongApiV1.WebServiceImplementation;
@@ -40,15 +42,28 @@ namespace BongApiV1.Public
         /// </summary>
         /// <param name="username">The Bong.tv user's account name</param>
         /// <param name="password">The Bong.tv user's password</param>
+        /// <param name="loggingDirectory">File system directory where log files go to or null to disable logging</param>
         /// <param name="bongClient">usually omitted or null to use the default Bong REST-Client. 
         /// For testing purposes a mock interface implementation may be passed in</param>
         /// <param name="waitMillisecondsBetweenCalls"></param>
         /// <exception cref="BongApiV1.Public.BongException">
         /// Thrown when authentication fails or request cannot be processed by the web service
         /// </exception>
-        public BongSession(string username, string password, IBongClient bongClient = null, long waitMillisecondsBetweenCalls = 0)
+        public BongSession(string username, string password, string loggingDirectory = null, IBongClient bongClient = null, long waitMillisecondsBetweenCalls = 0)
         {
-            _session = new BongSessionImpl(username, password, bongClient ?? new BongClientRestSharp(waitMillisecondsBetweenCalls));
+            if (loggingDirectory != null)
+            {
+                var di = new DirectoryInfo(loggingDirectory);
+
+                loggingDirectory = di.Exists ? di.FullName : null;
+            }
+
+            _session = new BongSessionImpl(username, password, loggingDirectory, bongClient ?? new BongClientRestSharp(waitMillisecondsBetweenCalls, loggingDirectory));
+        }
+
+        public void Close()
+        {
+            _session.Close();    
         }
 
         public IEnumerable<Recording> Recordings { get{ return _session.Recordings.Values; }}

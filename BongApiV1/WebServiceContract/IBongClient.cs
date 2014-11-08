@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BongApiV1.WebServiceContract
 {
@@ -24,6 +25,11 @@ namespace BongApiV1.WebServiceContract
         /// </summary>
         /// <returns>Response object returning server supplied information upon success or error message upon failure</returns>
         BongResponseLoginUser LoginUser();
+
+        /// <summary>
+        /// Log off the web service and free resources
+        /// </summary>
+        void Close();
 
         /// <summary>
         /// 

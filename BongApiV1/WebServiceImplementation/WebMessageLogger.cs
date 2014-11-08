@@ -10,59 +10,54 @@ namespace BongApiV1.WebServiceImplementation
 {
     internal static class WebMessageLogger
     {
-        private const string BaseDirectory = @"D:\Entwicklung\2014\Thaliana\Basisverzeichnis\Log\WebMessages";
-        private const bool LoggingEnabled = true;
+        private const int DaysToKeep = 1;  // accepted range 1..14
 
-        private static readonly string LogDir;
-        private static readonly bool Enabled ;
+        private static string _logDir = null;
 
-        static WebMessageLogger()
+        internal static void InitializeLogging(string baseDirectory)
         {
-            var ok = false;
             var deDe = new CultureInfo("de-DE");
 
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
-            if (LoggingEnabled)
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+            if (!string.IsNullOrWhiteSpace(baseDirectory) && Directory.Exists(baseDirectory))
             {
-                if (!string.IsNullOrWhiteSpace(BaseDirectory) && Directory.Exists(BaseDirectory))
+                var weblogBaseDir = Path.Combine(baseDirectory, "WebMessages");
+
+                if (!Directory.Exists(weblogBaseDir))
+                    Directory.CreateDirectory(weblogBaseDir);
+
+                var oldestDayToKeep = DateTime.Today.AddDays((0 < DaysToKeep && DaysToKeep < 14) ? -DaysToKeep : -1);
+
+                foreach (var directory in new DirectoryInfo(weblogBaseDir).GetDirectories())
                 {
-                    var yesterday = DateTime.Today.AddDays(-1);
+                    DateTime date;
 
-                    foreach (var directory in new DirectoryInfo(BaseDirectory).GetDirectories())
+                    try
                     {
-                        DateTime date;
-
-                        try
-                        {
-                            date = DateTime.ParseExact(directory.Name, "yyyyMMdd", deDe);
-                        }
-                        catch (FormatException)
-                        {
-                            continue;
-                        }
-
-                        if (date < yesterday)
-                        {
-                            directory.Delete(true);
-                        }
+                        date = DateTime.ParseExact(directory.Name, "yyyyMMdd", deDe);
+                    }
+                    catch (FormatException)
+                    {
+                        continue;
                     }
 
-                    LogDir = Path.Combine(BaseDirectory, String.Format("{0:yyyyMMdd}", DateTime.Today));
-
-                    if (!Directory.Exists(LogDir))
-                        Directory.CreateDirectory(LogDir);
-
-                    ok = true;
+                    if (date < oldestDayToKeep)
+                    {
+                        directory.Delete(true);
+                    }
                 }
-            }
 
-            Enabled = ok;
+                _logDir = Path.Combine(weblogBaseDir, String.Format("{0:yyyyMMdd}", DateTime.Today));
+
+                if (!Directory.Exists(_logDir))
+                    Directory.CreateDirectory(_logDir);
+            }
         }
 
         internal static void WriteLogMessage(string title, string message)
         {
-            var filename = Path.Combine(LogDir, string.Format("{0:HHmmssffff} {1}.log", DateTime.Now, title));
+            if (_logDir == null) return;
+
+            var filename = Path.Combine(_logDir, string.Format("{0:HHmmssffff} {1}.log", DateTime.Now, title));
 
             using (var sw = new StreamWriter(filename))
             {

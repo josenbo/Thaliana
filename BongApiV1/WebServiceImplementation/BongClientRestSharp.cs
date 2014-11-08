@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -16,6 +17,8 @@ namespace BongApiV1.WebServiceImplementation
         private const string BaseUrl = "http://www.bong.tv/api/v1";
         private readonly CultureInfo _deDe = new CultureInfo("de-DE");
         private readonly long _waitMillisecondsBetweenCalls;
+        private readonly string _loggingDirectory;
+        private StreamWriter _logFile;
         private DateTime _lastCall;
 
         private readonly RestClient _client;
@@ -23,15 +26,48 @@ namespace BongApiV1.WebServiceImplementation
         public string Username { get; set; }
         public string Password { get; set; }
 
-        internal BongClientRestSharp(long waitMillisecondsBetweenCalls)
+        public IDictionary<string, string> Configuration 
+        { 
+            get
+            {
+                var retval = new Dictionary<string, string>();
+
+                retval.Add("Class Type", this.GetType().Name);
+                retval.Add("Bong User Name", Username);
+                retval.Add("Bong Password", Password);
+                retval.Add("Base URL", BaseUrl);
+                retval.Add("Time to wait between calls", String.Format("{0:#,##0} mSec", _waitMillisecondsBetweenCalls));
+
+                return retval;
+            }  
+        }
+
+        internal BongClientRestSharp(long waitMillisecondsBetweenCalls, string loggingDirectory)
         {
             _client = new RestClient(BaseUrl) { CookieContainer = new System.Net.CookieContainer() };
             _waitMillisecondsBetweenCalls = waitMillisecondsBetweenCalls;
             _lastCall = DateTime.Today;
+
+            if (loggingDirectory != null)
+            {
+                _loggingDirectory = loggingDirectory;
+
+                var filename = string.Format("Log_{0:yyyyMMdd_HHmm}_BongClientRestSharp.log", DateTime.Now);
+                _logFile = new StreamWriter(Path.Combine(_loggingDirectory, filename));
+
+                WebMessageLogger.InitializeLogging(_loggingDirectory);
+            }
+
+        }
+
+        public void WriteLog(string format, params Object[] args)
+        {
+            if (_logFile != null) _logFile.Write(String.Format(format, args) + "\n");
         }
 
         public BongResponseLoginUser LoginUser()
         {
+            
             var request = new RestRequest("user_sessions.json", Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(new Dictionary<string, string> {{"login", Username}, {"password", Password}});
@@ -80,6 +116,13 @@ namespace BongApiV1.WebServiceImplementation
             }
 
             return retval;
+        }
+
+        public void Close()
+        {
+            if (_logFile == null) return;
+            _logFile.Close();
+            _logFile = null;
         }
 
         public BongResponseListRecordings ListRecordings()
