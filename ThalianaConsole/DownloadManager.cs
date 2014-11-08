@@ -7,35 +7,62 @@ namespace ThalianaConsole
 {
     public class DownloadManager
     {
-        private readonly List<DownloadableRecording> _recordings = new List<DownloadableRecording>();
  
-        public void DownloadFiles()
+        public bool DownloadFiles()
         {
-            var session = new BongSession(Settings.BongUsername,
+            try
+            {
+                DownloadRecordingsInternal();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Program.LogWriteLine("Process terminating due to exception {0} from {1} with message '{2}'", e.GetType().Name, e.Source, e.Message);
+                return false;
+            }
+        }
+
+        private void DownloadRecordingsInternal()
+        {
+            var downloadableRecordings = new List<DownloadableRecording>();
+
+            BongSession session;
+
+            try
+            {
+                session = new BongSession(Settings.BongUsername,
                                           Settings.BongPassword,
                                           waitMillisecondsBetweenCalls: Settings.WaitBetweenCallsMSec,
                                           loggingDirectory: Settings.LoggingDirectory);
 
-
-            foreach (var recording in session.Recordings)
+                Program.LogWriteLine("Connected to Bong.tv as {0}", Settings.BongUsername);
+            }
+            catch (BongException)
             {
-                if (recording.Status == BongRecordingState.Recorded)    
-                    _recordings.Add(new DownloadableRecording(recording));
+                Program.LogWriteLine("Could not connected to Bong.tv as {0}", Settings.BongUsername);
+                throw;
             }
 
-            foreach (var recording in _recordings)
+            try
             {
-                try
+                foreach (var recording in session.Recordings)
+                {
+                    if (recording.Status == BongRecordingState.Recorded)
+                        downloadableRecordings.Add(new DownloadableRecording(recording));
+                }
+
+                Program.LogWriteLine("Found {0} recordings waiting for download", downloadableRecordings.Count);
+
+                foreach (var recording in downloadableRecordings)
                 {
                     recording.Download();
                 }
-                catch (Exception e)
-                {
-                    Debug.Print("Exception beim Download: {0}", e.Message);                    
-                }
-            }
 
-            session.Close();
+            }
+            finally
+            {
+                session.Close();
+            }
         }
     }
 }

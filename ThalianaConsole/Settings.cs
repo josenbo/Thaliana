@@ -12,7 +12,9 @@ namespace ThalianaConsole
         public static string BongPassword { get; private set; }
         public static long WaitBetweenCallsMSec { get; private set; }
         public static string LoggingDirectory { get; private set; }
+        public static string LogFilePath { get; private set; }
         public static string DownloadDirectory { get; private set; }
+        public static string PlexDirectory { get; private set; }
 
         public static bool ReadConfiguration()
         {
@@ -51,6 +53,17 @@ namespace ThalianaConsole
             }
             else return false;
 
+            if (keyValue.ContainsKey("PlexDirectory"))
+            {
+                var p = keyValue["PlexDirectory"];
+
+                if (Directory.Exists(p))
+                    PlexDirectory = p;
+                else
+                    return false;
+            }
+            else return false;
+
             WaitBetweenCallsMSec = 100;
 
             if (keyValue.ContainsKey("WaitBetweenCallsMSec"))
@@ -62,16 +75,36 @@ namespace ThalianaConsole
                     WaitBetweenCallsMSec = w;
             }
 
+            LoggingDirectory = null;
+            LogFilePath = null;
+
             if (keyValue.ContainsKey("LoggingDirectory"))
             {
                 var p = keyValue["LoggingDirectory"];
 
                 if (Directory.Exists(p))
+                {
+                    var logFileCurrent = Path.Combine(p, "ThalianaConsole.log");
+                    var logFileOld = Path.Combine(p, "ThalianaConsole.old.log");
+
+                    if (File.Exists(logFileCurrent))
+                    {
+                        var fi = new FileInfo(logFileCurrent);
+                        if (4000000 < fi.Length)
+                        {
+                            if (File.Exists(logFileOld))
+                                File.Delete(logFileOld);
+
+                            File.Move(logFileCurrent, logFileOld);
+                        }
+                    }
+
                     LoggingDirectory = p;
-                else
-                    return false;
+                    LogFilePath = logFileCurrent;
+
+                }
+               else return false;
             }
-            else LoggingDirectory = null;
 
             return true;
         }
